@@ -201,4 +201,18 @@ def safe_open(pth, mode):
         How to open the file. Typically, 'w' for writing, 'r' for reading,
         and 'a' for appending. See the `open` function for more options.
     """
-    pass
+    if "w" in mode:
+        if os.path.exists(pth) is False:
+            return open(pth, mode)
+        else:
+            with open(pth, "rt") as fobj:
+                content = fobj.readlines()
+                if len(content) == 0:
+                    return open(pth, mode)
+                else:
+                    raise Exception
+    else:
+        if os.path.exists(pth):
+            return open(pth, mode)
+        else:
+            raise Exception
